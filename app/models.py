@@ -3,6 +3,7 @@ from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_misaka import markdown
 from slugify import slugify
+from bleach import clean, linkify
 from werkzeug.security import gen_salt, generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
@@ -74,7 +75,13 @@ class Post(db.Model, TimestampMixin):
 
     @staticmethod
     def on_changed_content(target, value, oldvalue, initiator):
-        target.content_html = str(markdown(value))
+        allowed_tags = ['a', 'abbr', 'acronym', 'b', 'blockquote', 'code',
+                        'em', 'i', 'li', 'ol', 'pre', 'strong', 'ul',
+                        'h1', 'h2', 'h3', 'p', 'img', 'table']
+
+        html = str(markdown(value))
+        target.content_html = linkify(
+            clean(html, tags=allowed_tags, strip=True))
 
 
 db.event.listen(Post.title, 'set', Post.on_changed_title)
