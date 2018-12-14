@@ -1,12 +1,9 @@
-from flask import Flask
+import os
+from flask_script import Manager
+from app import create_app
 
-app = Flask(__name__)
-
-
-@app.route('/')
-def index():
-    return '<h1>Hello, World!</h1>'
-
+app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
+manager = Manager(app)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    manager.run()
