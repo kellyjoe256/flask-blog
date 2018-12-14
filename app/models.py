@@ -9,8 +9,8 @@ db = SQLAlchemy()
 
 
 class TimestampMixin(object):
-    created = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    updated = db.Column(db.DateTime, onupdate=datetime.now)
+    created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now)
 
 
 class User(db.Model, TimestampMixin):
