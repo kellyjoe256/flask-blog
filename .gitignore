@@ -1,0 +1,8 @@
+# Mr Developer
+.idea
+
+# SQLite databases
+*.sqlite
+
+# Virtual environment
+venv
