@@ -1,8 +1,11 @@
-from flask import Blueprint
+from flask import (Blueprint, render_template)
 
 main = Blueprint(__name__, 'main')
 
 
 @main.route('/')
 def index():
-    return '<h1>Hello, World!</h1>'
+    data = {
+        'title': 'My Blog',
+    }
+    return render_template('main/index.html', **data)
