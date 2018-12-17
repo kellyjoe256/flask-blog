@@ -10,8 +10,8 @@ def create_app(config_name):
 
     db.init_app(app)
 
-    from app.admin.views import admin as admin_blueprint
-    app.register_blueprint(admin_blueprint, prefix='/admin')
+    from app.dashboard.views import dashboard as dashboard_blueprint
+    app.register_blueprint(dashboard_blueprint, prefix='/dashboard')
 
     from app.auth.views import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
