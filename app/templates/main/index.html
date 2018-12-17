@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="container">
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+            <div class="blog-post">
+                <h2 class="blog-post-title">
+                    <a href="#">
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                    </a>
+                </h2>
+                <p class="blog-post-meta">Posted On <small>May 9, 2018</small> by <a href="#">Wafukho Kelly Joseph</a></p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a arcu eget tortor venenatis laoreet. In hac habitasse platea dictumst...</p>
+                <p>
+                    <a class="continue-reading" href="#">&gt; Continue reading</a>
+                </p>
+            </div>
+            <!-- /.blog-post -->
+            {# Pagination Links #}
+        </div>
+        <!-- /.blog-main -->
+        {% include 'main/_sidebar.html' %}
+    </div>
+</div>
+<!-- /container -->
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock %}

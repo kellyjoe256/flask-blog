@@ -1,0 +1,14 @@
+{% set messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    <!-- begin message block -->
+    <div class="container flashed-messages">
+        <div class="row">
+            <div class="col-md-12">
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+            {% endfor %}
+            </div>
+        </div>
+    </div>
+    <!-- end message block -->
+{% endif %}
