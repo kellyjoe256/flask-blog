@@ -16,6 +16,50 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
     color: #333;
 }
 
+h1, .h1 {
+    font-size: 36px;
+    font-weight: 600;
+}
+
+label {
+    font-weight: 600;
+}
+
+.help-block {
+    font-size: 14px;
+}
+
+.form-control {
+    font-size: 16px;
+    border-radius: 0;
+    box-shadow: none;
+    border: 1px solid #aaa;
+}
+
+.form-control:focus {
+    border-color: #3c8dbc;
+    box-shadow: none;
+}
+
+.alert {
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.alert-success {
+    color: #3c763d;
+    background-color: #dff0d8;
+    border-color: #d6e9c6;
+}
+
+.alert-danger {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
 /* * Override Bootstrap's default container. */
 @media (min-width: 1200px) {
     .container {

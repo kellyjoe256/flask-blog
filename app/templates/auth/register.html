@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% from 'includes/macros.html' import render_field %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+            <h1>Register for an account</h1>
+            <br>
+            <form action="{{ url_for('auth.register') }}" method="POST" autocomplete="off">
+                {{
+                    render_field(form.name,
+                        class_='form-control', for_='name', placeholder='Your Name', autofocus='')
+                }}
+                {{
+                    render_field(form.username,
+                        class_='form-control', for_='username', placeholder='Your Username')
+                }}
+                {{
+                    render_field(form.email,
+                        type='email', class_='form-control', for_='email', placeholder='Your Email')
+                }}
+                {{
+                    render_field(form.password,
+                        class_='form-control', for_='password', placeholder='Your Password')
+                }}
+                {{
+                    render_field(form.confirm_password,
+                        class_='form-control', for_='confirm_password', placeholder='Confirm Password')
+                }}
+                {{ form.csrf_token }}
+                {{ form.submit(class='btn btn-default') }}
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock %}

@@ -2,19 +2,21 @@ from time import time
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 from flask_misaka import markdown
+from flask_login import LoginManager, UserMixin
 from slugify import slugify
 from bleach import clean, linkify
 from werkzeug.security import gen_salt, generate_password_hash, check_password_hash
 
 db = SQLAlchemy()
+login_manager = LoginManager()
 
 
 class TimestampMixin(object):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.now)
-    updated_at = db.Column(db.DateTime, onupdate=datetime.now)
+    updated_at = db.Column(db.DateTime, onupdate=datetime.now, default=datetime.now)
 
 
-class User(db.Model, TimestampMixin):
+class User(db.Model, TimestampMixin, UserMixin):
     __tablename__ = 'user'
 
     user_id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +33,9 @@ class User(db.Model, TimestampMixin):
     def __repr__(self):
         return '<User {}>'.format(self.name)
 
+    def get_id(self):
+        return self.user_id
+
     @property
     def password(self):
         raise AttributeError('password is not a readable attribute')
@@ -43,6 +48,11 @@ class User(db.Model, TimestampMixin):
 
     def verify_password(self, password):
         return check_password_hash(self.hashed_password, password + self.salt)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
 post_tag = db.Table('post_tag',

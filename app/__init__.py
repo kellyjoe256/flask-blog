@@ -1,6 +1,6 @@
 from flask import Flask
 from config import config
-from app.models import db
+from app.models import db, login_manager
 
 
 def create_app(config_name):
@@ -9,9 +9,14 @@ def create_app(config_name):
     config[config_name].init_app(app)
 
     db.init_app(app)
+    login_manager.init_app(app)
 
-    from app.dashboard.views import dashboard as dashboard_blueprint
-    app.register_blueprint(dashboard_blueprint, prefix='/dashboard')
+    login_manager.login_view = 'auth.login'
+    login_manager.login_message = 'You must be logged in to access this page'
+    login_manager.login_message_category = 'warning'
+
+    from app.admin.views import admin as admin_blueprint
+    app.register_blueprint(admin_blueprint, url_prefix='/admin')
 
     from app.auth.views import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
