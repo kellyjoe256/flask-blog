@@ -23,6 +23,7 @@ class User(db.Model, TimestampMixin):
     email = db.Column(db.String(50), unique=True, nullable=False)
     salt = db.Column(db.String(32))
     hashed_password = db.Column(db.String(128))
+    active = db.Column(db.Boolean, default=False)
     is_admin = db.Column(db.Boolean, default=False)
 
     posts = db.relationship('Post', backref='user', lazy=True)
