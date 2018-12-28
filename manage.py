@@ -6,7 +6,7 @@ from app import create_app, db
 app = create_app(os.environ.get('FLASK_CONFIG') or 'default')
 
 manager = Manager(app)
-migrate = Migrate(app, db)
+migrate = Migrate(app, db, compare_type=True)
 
 
 def make_shell_context():

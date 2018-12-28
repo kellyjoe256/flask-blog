@@ -4,24 +4,50 @@
 
 {% block page_content %}
     <div class="row">
-        <div class="col-sm-8 blog-main">
-            <div class="blog-post">
-                <h2 class="blog-post-title">
-                    <a href="#">
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                    </a>
-                </h2>
-                <p class="blog-post-meta">Posted On <small>May 9, 2018</small> by <a href="#">Wafukho Kelly Joseph</a></p>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam a arcu eget tortor venenatis laoreet. In hac habitasse platea dictumst...</p>
-                <p>
-                    <a class="continue-reading" href="#">&gt; Continue reading</a>
-                </p>
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="title">{{ title }}</h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            {% if posts_count == 0 %}
+                                <p>No <a href="{{ url_for('admin.list_posts') }}" title="Posts">Posts</a></p>
+                            {% elif posts_count == 1 %}
+                                <p>1 <a href="{{ url_for('admin.list_posts') }}" title="Posts">Post</a></p>
+                            {% else %}
+                                <p>{{ posts_count }} <a href="{{ url_for('admin.list_posts') }}" title="Posts">Posts</a></p>
+                            {% endif %}
+                        </div>
+                        {% if current_user.is_admin %}
+                            <div class="col-sm-3">
+                                {% if tags_count == 0 %}
+                                    <p>No <a href="{{ url_for('admin.list_tags') }}" title="Tags">Tags</a></p>
+                                {% elif tags_count == 1 %}
+                                    <p>1 <a href="{{ url_for('admin.list_tags') }}" title="Tags">Tag</a></p>
+                                {% else %}
+                                    <p>{{ tags_count }} <a href="{{ url_for('admin.list_tags') }}" title="Tags">Tags</a></p>
+                                {% endif %}
+                            </div>
+                            <div class="col-sm-3">
+                                {% if users_count == 0 %}
+                                    <p>No <a href="{{ url_for('admin.list_users') }}" title="Users">Users</a></p>
+                                {% elif users_count == 1 %}
+                                    <p>1 <a href="{{ url_for('admin.list_users') }}" title="Users">User</a></p>
+                                {% else %}
+                                    <p>{{ users_count }} <a href="{{ url_for('admin.list_users') }}" title="Users">Users</a></p>
+                                {% endif %}
+                            </div> 
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-            <!-- /.blog-post -->
-            {# Pagination Links #}
         </div>
-        <!-- /.blog-main -->
-        {% include 'main/_sidebar.html' %}
     </div>
 {% endblock %}
 

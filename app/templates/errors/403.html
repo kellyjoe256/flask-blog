@@ -1,15 +1,20 @@
-{% extends "base.html" %}
-{% block title %}{{ title }}{% endblock %}
-{% block body %}
-            <div class="intro-header">
-                <div class="container">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div class="intro-message">
-                                <h1>Access Forbidden</h1>
-                            </div>
-                        </div>
-                    </div>
+{% extends "errors/base.html" %}
+
+{% block title %}403 Error{% endblock %}
+
+{% block page_content %}
+        <div id="notfound">
+            <div class="notfound">
+                <div class="notfound-404">
+                    <h1>403</h1>
                 </div>
+                <h2>Access Forbidden!</h2>
+                <p>{{ e }}</p>
+                {% if current_user.is_authenticated %}
+                <a href="{{ url_for('admin.dashboard') }}">Back To Dashboard</a>
+                {% else %}
+                <a href="{{ url_for('main.index') }}">Back To Homepage</a>
+                {% endif %}
             </div>
+        </div>
 {% endblock %}

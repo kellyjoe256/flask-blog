@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% from 'includes/macros.html' import render_field  %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/simplemde/dist/simplemde.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/chosen/chosen.css') }}">
+    <style type="text/css">
+        .chosen-container {
+            font-size: 16px;
+        }
+
+        .chosen-container-multi .chosen-choices {
+            padding: 5px 10px;
+            background-color: #fff;
+            background-image: none;
+            border: 1px solid #aaa;
+            border-radius: 0;
+            -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+            -webkit-transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            -webkit-transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+            transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
+        }
+    </style>
+{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="title">{{ title }}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="pull-right">
+                            <a href="{{ url_for('admin.list_posts') }}" class="btn btn-default">Posts</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <form action="{{ url_for('admin.create_post') }}" method="POST" autocomplete="off" enctype="multipart/form-data">
+                    <div class="checkbox">
+                        <label>{{ form.publish(value='y') }} Publish</label>
+                    </div>
+                    {{
+                        render_field(form.title,
+                            class_='form-control', for_='title', placeholder='Title')
+                    }}
+                    {{
+                        render_field(form.cover_image, for_='cover_image')
+                    }}
+                    {{
+                        render_field(form.tags,
+                            class_='form-control chosen-select', for_='tags')
+                    }}
+                    {{
+                        render_field(form.content,
+                            class_='form-control', for_='content',placeholder='Post Content', rows=10)
+                    }}
+                    {{ form.csrf_token }}
+                    {{ form.submit(class='btn btn-default', value='Create Post') }}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+
+    <script src="{{ url_for('static', filename='assets/vendor/simplemde/dist/simplemde.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/vendor/chosen/chosen.jquery.js') }}"></script>
+    <script>
+        $('#tags').chosen({
+            placeholder_text_multiple: 'Select Tag(s)',
+        });
+        var simplemde = new SimpleMDE({ 
+            element: $("#content")[0],
+            forceSync: true,
+            showIcons: ["code", "table"],
+            tabSize: 4,
+        });
+    </script>
+{% endblock %}

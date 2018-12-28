@@ -3,6 +3,9 @@ uploads
 
 # Mr Developer
 .idea
+.vscode
+.htmlhintrc
+todo.txt
 
 # SQLite databases
 *.sqlite

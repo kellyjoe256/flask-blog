@@ -194,3 +194,38 @@ label {
 .blog-footer p:last-child {
     margin-bottom: 0;
 }
+
+.panel-heading h5.title {
+    font-size: 18px;
+    margin: 11px 0;
+}
+
+.panel-heading .pull-right a {
+    font-size: 16px;
+}
+
+.panel .table a {
+    text-decoration: none;
+}
+
+.tt {
+    text-transform: uppercase;
+}
+
+.tt .btn {
+    padding: 15px 25px;
+}
+
+.post-image {
+    margin: 1em 0;
+}
+
+.tags {
+    margin-top: 30px;
+}
+
+::selection {
+    color: #fff;
+    background: #0085a1;
+    text-shadow: none;
+}

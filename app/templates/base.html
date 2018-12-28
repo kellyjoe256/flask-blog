@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% block head %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -11,13 +10,16 @@
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 
     <title>{% block title %}{% endblock %}</title>
-
+    
+    {% block head_css %}
     <!-- Bootstrap core CSS -->
     {% if config['ENV'] == 'production' %}
-    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Source+Serif+Pro:400,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200i,300,300i,400,400i,600,600i,700,700i,900,900i|Source+Serif+Pro:400,600,700|Ubuntu+Mono:400,400i,700,700i" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css" rel="stylesheet">
     {% else %}
     <link href="{{ url_for('static', filename='assets/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='assets/vendor/fontawesome/font-awesome.css') }}" rel="stylesheet">
     {% endif %}
 
     <link href="{{ url_for('static', filename='assets/css/blog.css') }}" rel="stylesheet">
@@ -36,7 +38,7 @@
                 {% if current_user.is_authenticated %}
                 <a href="{{ url_for('admin.dashboard') }}" class="navbar-brand">Dashboard</a>
                 {% else %}
-                <a href="{{ url_for('main.index') }}" class="navbar-brand">My Blog</a>
+                <a href="{{ url_for('main.index') }}" class="navbar-brand">Blog</a>
                 {% endif %}
             </div>
             <div id="navbar" class="navbar-collapse collapse">
@@ -45,10 +47,10 @@
 
                 <ul class="nav navbar-nav navbar-right">
                     {% if current_user.is_authenticated %}
-                    <li><a href="#">Posts</a></li>
-                    <li><a href="#">Tags</a></li>
+                    {{ nav_link('admin.list_posts', 'Posts', 'post') }}
+                    {{ nav_link('admin.list_tags', 'Tags', 'tag') }}
                     {% if current_user.is_admin %}
-                    <li><a href="#">Users</a></li>
+                    {{ nav_link('admin.list_users', 'Users', 'user') }}
                     {% endif %}
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ current_user.name }} <span class="caret"></span>
@@ -59,8 +61,8 @@
                         </ul>
                     </li>
                     {% else %}
-                    {{ nav_link('auth.login', 'Login') }}
                     {{ nav_link('auth.register', 'Register') }}
+                    {{ nav_link('auth.login', 'Login') }}
                     {% endif %}
                 </ul>
             </div>

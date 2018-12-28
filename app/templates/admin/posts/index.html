@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% from 'includes/macros.html' import pagination_widget  %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="title">{{ title }}</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <span class="pull-right">
+                            <a href="{{ url_for('admin.create_post') }}" class="btn btn-primary">Create Post</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                {% if posts %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th width="40%">Title</th>
+                                {% if current_user.is_admin %}
+                                    <th>User</th>
+                                {% endif %}
+                                <th width="10%">Published</th>
+                                <th width="15%">Created On</th>
+                                <th width="15%">Last Updated</th>
+                                <th width="10%">&nbsp;</th>
+                            </tr>
+                            {% for post in posts %}
+                            <tr>
+                                <td>{{ post.title }}</td>
+                                {% if current_user.is_admin %}
+                                    <td>{{ post.username }}</td>
+                                {% endif %}
+                                <td>
+                                    {% if post.published %}
+                                    <small class="text-success">Yes</small>
+                                    {% else %}
+                                    <small class="text-info">No</small>
+                                    {% endif %}
+                                </td>
+                                <td>{{ post.created_at.strftime('%b %d, %Y') }}</td>
+                                <td>{{ post.updated_at.strftime('%b %d, %Y %-I:%M:%S %p') }}</td>
+                                <td>
+                                    <a href="{{ url_for('admin.edit_post', post_id=post.post_id) }}" class="text-primary" title="Edit Post">
+                                        <i class="fa fa-pencil"></i>
+                                    </a>
+                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a href="{{ url_for('admin.delete_post', post_id=post.post_id) }}" class="text-danger" title="Delete Post">
+                                        <i class="fa fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <div class="pull-right">
+                        {% if pagination.pages > 1 %}
+                        {{ pagination_widget(pagination, 'admin.list_posts') }}
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <p>No Posts available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock %}

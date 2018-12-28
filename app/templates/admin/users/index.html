@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% from 'includes/macros.html' import pagination_widget  %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block page_content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5 class="title">{{ title }}</h5>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-body">
+                {% if users %}
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Created On</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            {% for user in users %}
+                            <tr>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.created_at.strftime('%b %d, %Y') }}</td>
+                                <td>
+                                    {% if user.active %}
+                                    <a href="{{ url_for('admin.deactivate_account', user_id=user.user_id) }}" title="Deactivate User Account">Deactivate</a>
+                                    {% else %}  
+                                    <a href="{{ url_for('admin.activate_account', user_id=user.user_id) }}" title="Activate User Account">Activate</a>
+                                    {% endif %}
+                                    &nbsp;
+                                    <a href="{{ url_for('admin.change_user_password', user_id=user.user_id) }}" title="Change User Password">Change Password</a>
+                                    &nbsp;
+                                    {% if user.is_admin %}
+                                    <a href="{{ url_for('admin.revoke_admin', user_id=user.user_id) }}" title="Remove Admin Rights">Revoke Admin</a>
+                                    {% else %}
+                                    <a href="{{ url_for('admin.make_admin', user_id=user.user_id) }}" title="Make User an Admin">Make Admin</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="clearfix">
+                    <div class="pull-right">
+                        {% if pagination.pages > 1 %}
+                        {{ pagination_widget(pagination, 'admin.list_users') }}
+                        {% endif %}
+                    </div>
+                </div>
+                {% else %}
+                <p>No Users available</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock %}

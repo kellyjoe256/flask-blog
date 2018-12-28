@@ -1,21 +1,23 @@
 <div class="col-sm-3 col-sm-offset-1">
     <div class="sidebar-module">
         <h4>Most Recent Posts</h4>
-        <ul class="list-unstyled recent-posts">
-            <li>
-                <a href="#">Lorem ipsum dolor sit amet, consectetur adipiscing elit</a>
-            </li>
-        </ul>
+        {% if recent_posts %}
+            <ul class="list-unstyled recent-posts">
+                {% for recent_post in recent_posts %}
+                    <li><a href="{{ url_for('main.show_post', slug=recent_post.slug) }}">{{ recent_post.title }}</a></li> 
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
     <div class="sidebar-module">
         <h4>Archives</h4>
-        <ul class="list-unstyled">
-            <li><a href="#">September 2018</a></li>
-            <li><a href="#">August 2018</a></li>
-            <li><a href="#">July 2018</a></li>
-            <li><a href="#">June 2018</a></li>
-            <li><a href="#">May 2018</a></li>
-        </ul>
+        {% if archives %}
+            <ul class="list-unstyled">
+                {% for archive in archives %}
+                <li><a href="{{ url_for('main.show_archive_posts', month=archive['month'], year=archive['year']) }}">{{ archive['month'] }} {{ archive['year'] }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
     </div>
 </div>
 <!-- /.blog-sidebar -->

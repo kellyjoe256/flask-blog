@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block head_css %}
+    {{ super()  }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='assets/vendor/highlightjs/styles/googlecode.css') }}">
+    <style>
+        code, pre {
+            font-family: 'Ubuntu Mono', 'Source Code Pro', monospace;
+            font-size: 16px;
+            margin-bottom: 1em;
+        }
+
+        pre[class*="language-"] {
+            font-size: 14px;
+            background: #f8f8f8;
+            display: block;
+            border: 1px solid #eee!important;
+            -moz-border-radius: 3px;
+            -webkit-border-radius: 3px;
+            border-radius: 3px;
+            padding: 1.5em!important;
+        }
+
+        code[class*="language-"], pre[class*="language-"] {
+            font-family: 'Ubuntu Mono', 'Source Code Pro', monospace;
+        }
+
+        :not(pre) > code {
+            padding: 2px 4px;
+            border: none;
+            font-family: 'Ubuntu Mono', 'Source Code Pro', monospace;
+            font-size: 90%;
+            font-weight: 400;
+            color: #222;
+            border-radius: 0;
+            white-space: nowrap;
+            background: #f1f1f1;
+            border: 1px solid #e1e1e1;
+            border-radius: 4px;
+        }
+
+        .hljs {
+            background: transparent;
+            padding: 0.75em;
+        }
+    </style>
+{% endblock %}
+
+{% block page_content %}
+    <div class="row">
+        <div class="col-sm-8 blog-main">
+            <div class="blog-post">
+                <h2 class="blog-post-title">{{ post.title }}</h2>
+                <p class="blog-post-meta">Posted On <small>{{ post.created_at.strftime('%b %d, %Y') }}</small> by <a href="{{ url_for('main.show_user_posts', username=post.username) }}">{{ post.author }}</a></p>
+                {% if post.cover_image %}
+                <img class="post-image img-responsive" src="{{ url_for('static', filename='uploads/' + post.cover_image) }}" alt="{{ post.title }}">
+                {% endif %}
+                {{ post.content_html|safe }}
+                <div class="tags">
+                    <span style="font-size: 16px; color: #868e96;">Tags:</span>
+                    {% for tag in post_tags %}
+                        <a href="{{ url_for('main.show_tag_posts', slug=tag.slug) }}" class="btn btn-default">{{ tag.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- /.blog-main -->
+        {% include 'main/_sidebar.html' %}
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script src="{{ url_for('static', filename='assets/vendor/highlightjs/highlight.js') }}"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+{% endblock %}

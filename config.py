@@ -7,11 +7,16 @@ app_dir = os.path.join(basedir, 'app')
 class Config(object):
 
     DEBUG = False
-    UPLOAD_DIR = os.path.join(app_dir, 'static' + os.sep + 'uploads')
+    PER_PAGE = 10
     SECRET_KEY = os.environ.get('SECRET_KEY') or \
         '\xc3\x0eF\x0c\xd8@\x9d\xc1`d+q\x04N\x1d\x15\x97\xd6\xfb\xa6S\x9ds\x89'
     SQLALCHEMY_COMMIT_ON_TEARDOWN = True
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    UPLOAD_DIR = os.path.join(app_dir, 'static', 'uploads')
+    # Flask-Uploads Settings
+    UPLOADED_FILES_ALLOW = ('png', 'jpg', 'jpeg', 'gif', 'svg')
+    UPLOADED_FILES_DEST = 'uploads'
+    UPLOADS_DEFAULT_DEST = os.path.join(app_dir, 'static')
 
     @staticmethod
     def init_app(app):

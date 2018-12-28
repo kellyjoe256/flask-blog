@@ -4,6 +4,8 @@
 
 {% block page_content %}
     <div class="row">
+        <h1>{{ title }}</h1>
+        <hr>
         <div class="col-sm-8 blog-main">
             {% if posts %}
                 {% for post in posts %}
@@ -21,11 +23,11 @@
                             <a class="continue-reading" href="{{ url_for('main.show_post', slug=post.slug) }}">&gt; Continue reading</a>
                         </p>
                     </div>
-                <!-- /.blog-post -->
+                    <!-- /.blog-post -->
                 {% endfor %}
                 <div class="clearfix tt">
                     {% if pagination.pages > 1 %}
-                    {{ pagination_widget(pagination, 'main.index') }}
+                    {{ pagination_widget(pagination, 'main.show_tag_posts') }}
                     {% endif %}
                 </div>
             {% else %}
