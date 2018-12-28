@@ -1,8 +1,12 @@
 # Introduction
 A simple blog based on `python3.5` and the `flask` python web framework.
 
+### Demo
+You can try it [here](https://mayatsa-flask-blog.herokuapp.com/)
+
 ### Functionality
-- Post management including adding, editing and deleting
+- WYSIWYG Markdown editor based on [SimpleMDE Markdown Editor](https://simplemde.com/)
+- Post management including adding, editing, deleting and image uploading
 - Tag management including adding, editing and deleting(`reserved for admin`)
 - User management including activating or deactivating account, changing password and grant or revoking admin rights
 - Authentication including registration and logging in
