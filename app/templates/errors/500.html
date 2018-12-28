@@ -1,6 +1,6 @@
 {% extends "errors/base.html" %}
 
-{% block title %}403 Error{% endblock %}
+{% block title %}Internal Server Error{% endblock %}
 
 {% block page_content %}
         <div id="notfound">
@@ -9,7 +9,6 @@
                     <h1>500</h1>
                 </div>
                 <h2>Internal Server Error!</h2>
-                <p>{{ e }}</p>
                 {% if current_user.is_authenticated %}
                 <a href="{{ url_for('admin.dashboard') }}">Back To Dashboard</a>
                 {% else %}
