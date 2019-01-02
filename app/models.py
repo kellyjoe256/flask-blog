@@ -1,6 +1,6 @@
 from calendar import month_name
 from datetime import datetime
-from sqlalchemy import func, extract
+from sqlalchemy import cast, func, extract, Boolean
 from flask_sqlalchemy import SQLAlchemy
 from markdown import markdown
 from flask_login import LoginManager, UserMixin
@@ -110,7 +110,7 @@ class Post(db.Model, TimestampMixin):
     @classmethod
     def get_recent_posts(cls, total=5):
         most_recent_posts = cls.query.with_entities(cls.title, cls.slug). \
-            filter(cls.published == 1). \
+            filter(cast(Post.published, Boolean) == bool(1)). \
             order_by(cls.created_at.desc()). \
             limit(total). \
             all()
@@ -125,15 +125,15 @@ class Post(db.Model, TimestampMixin):
             group_by(extract('month', cls.created_at),
                      extract('year', cls.created_at)). \
             having(func.count(cls.post_id) >= 1). \
-            filter(cls.published == 1). \
+            filter(cast(Post.published, Boolean) == bool(1)). \
             order_by(func.min(cls.created_at).desc()). \
             limit(total). \
             all()
         formatted_archives = []
         for archive in archives:
             formatted_archives.append({
-                'month': month_name[archive[0]],
-                'year': archive[1],
+                'month': month_name[int(archive[0])],
+                'year': int(archive[1]),
             })
         return formatted_archives
 

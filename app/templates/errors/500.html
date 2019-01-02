@@ -9,10 +9,10 @@
                     <h1>500</h1>
                 </div>
                 <h2>Internal Server Error!</h2>
+                {% if current_user.is_authenticated %}
                 {% if config['ENV'] == 'development' %}
                 <p>{{ e }}</p>
                 {% endif %}
-                {% if current_user.is_authenticated %}
                 <a href="{{ url_for('admin.dashboard') }}">Back To Dashboard</a>
                 {% else %}
                 <a href="{{ url_for('main.index') }}">Back To Homepage</a>

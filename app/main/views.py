@@ -1,5 +1,5 @@
 from time import strptime
-from sqlalchemy import extract
+from sqlalchemy import cast, extract, Boolean
 from flask import (Blueprint, render_template, request, current_app, abort)
 from app.models import Post, User, Tag
 
@@ -12,7 +12,7 @@ def index():
     entities = (Post.title, Post.created_at, Post.slug, Post.cover_image,
                 User.username, User.name.label('author'))
     pagination = Post.query.with_entities(*entities).join(User). \
-        filter(Post.published == 1). \
+        filter(cast(Post.published, Boolean) == bool(1)). \
         order_by(Post.created_at.desc()). \
         paginate(page,
                  per_page=current_app.config.get('PER_PAGE', 10),
@@ -34,7 +34,7 @@ def show_post(slug):
                 Post.cover_image, Post.content_html,
                 User.username, User.name.label('author'))
     post = Post.query.with_entities(*entities).join(User). \
-        filter(Post.published == 1). \
+        filter(cast(Post.published, Boolean) == bool(1)). \
         filter(Post.slug == slug).first()
     if not post:
         abort(404)
@@ -62,7 +62,7 @@ def show_user_posts(username):
                 User.username, User.name.label('author'))
     pagination = Post.query.with_entities(*entities).join(User). \
         filter(User.user_id == user.user_id). \
-        filter(Post.published == 1). \
+        filter(cast(Post.published, Boolean) == bool(1)). \
         order_by(Post.created_at.desc()). \
         paginate(page,
                  per_page=current_app.config.get('PER_PAGE', 10),
@@ -93,7 +93,7 @@ def show_tag_posts(slug):
     pagination = Post.query.with_entities(*entities). \
         join(User).join(Post.tags). \
         filter(Tag.tag_id == tag.tag_id). \
-        filter(Post.published == 1). \
+        filter(cast(Post.published, Boolean) == bool(1)). \
         order_by(Post.created_at.desc()). \
         paginate(page,
                  per_page=current_app.config.get('PER_PAGE', 10),
@@ -120,6 +120,7 @@ def show_archive_posts(month, year):
     pagination = Post.query.with_entities(*entities).join(User). \
         filter(extract('month', Post.created_at) == numeric_month). \
         filter(extract('year', Post.created_at) == year). \
+        filter(cast(Post.published, Boolean) == bool(1)). \
         order_by(Post.created_at.desc()). \
         paginate(page,
                  per_page=current_app.config.get('PER_PAGE', 10),
